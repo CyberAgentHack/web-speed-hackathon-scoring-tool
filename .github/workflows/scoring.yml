@@ -17,6 +17,7 @@ scoring-job: &scoring-job
 
 name: Scoring
 on:
+  push:
   schedule:
     # Every 30 mins between 11am to 7pm on 2/6 (JST)
     - cron: '0,30 2-10 6 2 *'
