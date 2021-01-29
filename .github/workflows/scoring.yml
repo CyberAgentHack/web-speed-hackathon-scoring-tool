@@ -23,6 +23,7 @@ jobs:
       - run: yarn scoring
         env:
           TARGET_GROUP: ${{ matrix.targetGroup }}
+      - uses: shogo82148/actions-mutex@v1
       - name: Push scores
         run: |
           git config --global user.name "github-actions[bot]"
