@@ -1,20 +1,3 @@
-scoring-job: &scoring-job
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-    - run: yarn install
-    - run: yarn build
-    - run: yarn scoring
-    - name: Push scores
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-        git add public
-        git commit -m "Update scores"
-        git push
-
 name: Scoring
 on:
   push:
@@ -27,49 +10,31 @@ on:
 env:
   PARALLEL_COUNT: 2
 jobs:
-  scoring-0:
-    <<: *scoring-job
-    env:
-      TARGET_GROUP: 0
-  scoring-1:
-    <<: *scoring-job
-    env:
-      TARGET_GROUP: 1
-  # scoring-2:
-  #   <<: *scoring-job
-  #   env:
-  #     TARGET_GROUP: 2
-  # scoring-3:
-  #   <<: *scoring-job
-  #   env:
-  #     TARGET_GROUP: 3
-  # scoring-4:
-  #   <<: *scoring-job
-  #   env:
-  #     TARGET_GROUP: 4
-  # scoring-5:
-  #   <<: *scoring-job
-  #   env:
-  #     TARGET_GROUP: 5
-  # scoring-6:
-  #   <<: *scoring-job
-  #   env:
-  #     TARGET_GROUP: 6
-  # scoring-7:
-  #   <<: *scoring-job
-  #   env:
-  #     TARGET_GROUP: 7
+  scoring:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        targetGroup: [0, 1]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: yarn install
+      - run: yarn build
+      - run: yarn scoring
+        env:
+          TARGET_GROUP: ${{ matrix.targetGroup }}
+      - name: Push scores
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add public
+          git commit -m "Update scores"
+          git push
   leaderboard:
     runs-on: ubuntu-latest
     needs:
-      - scoring-0
-      - scoring-1
-      # - scoring-2
-      # - scoring-3
-      # - scoring-4
-      # - scoring-5
-      # - scoring-6
-      # - scoring-7
+      - scoring
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@v2
