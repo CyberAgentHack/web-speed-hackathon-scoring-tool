@@ -101,50 +101,68 @@
         height: 50px;
         border-radius: 25px;
       }
+      .closed {
+        color: white;
+        background: rgb(37, 9, 39);
+      }
+      .closed main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .p-closed {
+        font-size: 24px;
+      }
     </style>
   </head>
-  <body>
+  <body class="{{#if closed}}closed{{/if}}">
     <h1>Web Speed Hackathon Online Leaderboard</h1>
     <main>
-      <p class="p-updated">更新日時: <time>{{now}}</time></p>
-      <table class="p-leaderboard">
-        <thead class="p-rank">
-          <tr class="p-rank__tr">
-            <th class="p-rank__rank">Rank</th>
-            <th class="p-rank__id">ID</th>
-            <th class="p-rank__score">Score</th>
-          </tr>
-        </thead>
-        <tbody class="p-rank__body">
-          {{#each competitors}}
-            <tr class="p-rank__tr{{#if this.rank}} p-rank__tr--with-rank{{/if}}">
-              <th class="p-rank__rank">{{#if this.rank}}{{this.rank}}{{else}}-{{/if}}</th>
-              <td class="p-rank__id">
-                <img
-                  class="p-rank__image"
-                  src="{{this.icon}}"
-                  alt="{{this.competitorId}}"
-                  width="40"
-                  height="40"
-                />
-                <p class="p-rank__name">
-                  {{this.competitorId}}
-                </p>
-              </td>
-              <td class="p-rank__score">
-                {{#if this.result.error}}
-                  <div title="{{this.result.error.message}}">(計測エラー)</div>
-                {{else}}
-                  <div>{{this.result.score}}</div>
-                  {{#if this.ineligible}}
-                    <div class="p-rank__score__message">(参考得点)</div>
-                  {{/if}}
-                {{/if}}
-              </td>
+      {{#if closed}}
+        <p class="p-closed">最終集計中</p>
+        <iframe src="https://giphy.com/embed/Cd9XcHdZEIcaA" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+        <p><a href="https://giphy.com/gifs/animation-doughnuts-lighthouse-Cd9XcHdZEIcaA">via GIPHY</a></p>
+      {{else}}
+        <p class="p-updated">更新日時: <time>{{now}}</time></p>
+        <table class="p-leaderboard">
+          <thead class="p-rank">
+            <tr class="p-rank__tr">
+              <th class="p-rank__rank">Rank</th>
+              <th class="p-rank__id">ID</th>
+              <th class="p-rank__score">Score</th>
             </tr>
-          {{/each}}
-        </tbody>
-      </table>
+          </thead>
+          <tbody class="p-rank__body">
+            {{#each competitors}}
+              <tr class="p-rank__tr{{#if this.rank}} p-rank__tr--with-rank{{/if}}">
+                <th class="p-rank__rank">{{#if this.rank}}{{this.rank}}{{else}}-{{/if}}</th>
+                <td class="p-rank__id">
+                  <img
+                    class="p-rank__image"
+                    src="{{this.icon}}"
+                    alt="{{this.competitorId}}"
+                    width="40"
+                    height="40"
+                  />
+                  <p class="p-rank__name">
+                    {{this.competitorId}}
+                  </p>
+                </td>
+                <td class="p-rank__score">
+                  {{#if this.result.error}}
+                    <div title="{{this.result.error.message}}">(計測エラー)</div>
+                  {{else}}
+                    <div>{{this.result.score}}</div>
+                    {{#if this.ineligible}}
+                      <div class="p-rank__score__message">(参考得点)</div>
+                    {{/if}}
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/if}}
     </main>
   </body>
 </html>

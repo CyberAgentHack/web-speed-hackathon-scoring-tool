@@ -55,13 +55,14 @@ function formatScores(scores: MeasurementResult[]): FormattedScore[] {
 export async function generateLeaderboard(
   template: string,
   scores: MeasurementResult[],
+  closed: boolean,
 ): Promise<string> {
   const sortedScores = formatScores(scores);
   const now = formatToTimeZone(new Date(), 'YYYY-MM-DD HH:mm:ss', {
     timeZone: 'Asia/Tokyo',
   });
   const templateDelegate = handlebars.compile(template);
-  const html = templateDelegate({ competitors: sortedScores, now });
+  const html = templateDelegate({ competitors: sortedScores, now, closed });
 
   return html;
 }

@@ -27,11 +27,12 @@ async function getScores(): Promise<MeasurementResult[]> {
 
 async function main(): Promise<void> {
   const template = await fs.readFile(
-    path.join(__dirname, '..', '..', 'src', 'index.handlebars'),
+    path.join(__dirname, '..', '..', 'src', 'template', 'index.handlebars'),
     { encoding: 'utf8' },
   );
   const scores = await getScores();
-  const html = await generateLeaderboard(template, scores);
+  const closed = process.env.CLOSED === 'true';
+  const html = await generateLeaderboard(template, scores, closed);
   const htmlName = 'index.html';
 
   await saveToPublicDir(htmlName, html);
