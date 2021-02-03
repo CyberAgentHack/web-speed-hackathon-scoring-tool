@@ -12,6 +12,7 @@ jobs:
   scoring:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         targetGroup: [0, 1]
     steps:
