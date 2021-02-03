@@ -124,12 +124,8 @@ async function measureCompetitor(
   console.log(`Competitor: ${competitor.id}`);
 
   try {
-    if (competitor.id === 'xx') throw new Error('Something went wrong.');
-
     const lighthouseScores = await measurePages(competitor.url, targetPaths);
     const hackathonScore = calculateHackathonScore(lighthouseScores);
-
-    if (competitor.id === 'zz') hackathonScore.score = 0;
 
     console.log(`Score: ${hackathonScore.score}`);
 
