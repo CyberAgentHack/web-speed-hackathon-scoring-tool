@@ -31,5 +31,5 @@ jobs:
 
           git pull --ff-only
           git add public
-          git commit -m "Update scores"
+          git diff-index --quiet HEAD || git commit -m "Update scores"
           git push
