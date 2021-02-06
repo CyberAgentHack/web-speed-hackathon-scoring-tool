@@ -95,4 +95,9 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://speedup-hackathon.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'fumi',
+    url: 'https://cyber-webspeed.herokuapp.com/',
+    eligible: true,
+  },
 ];
