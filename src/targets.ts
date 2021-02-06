@@ -100,4 +100,9 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://cyber-webspeed.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'Phoenix',
+    url: 'https://web-performance-kaikaikai.herokuapp.com/',
+    eligible: true,
+  },
 ];
