@@ -105,4 +105,9 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://web-performance-kaikaikai.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'htaka',
+    url: 'https://wsh2021.herokuapp.com/',
+    eligible: true,
+  },
 ];
