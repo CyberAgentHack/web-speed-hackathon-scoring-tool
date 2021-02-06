@@ -70,4 +70,9 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://wsh-2021.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'jdkfx',
+    url: 'https://ca-wsh-2021.herokuapp.com/',
+    eligible: true,
+  },
 ];
