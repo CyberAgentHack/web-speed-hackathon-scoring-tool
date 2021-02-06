@@ -115,4 +115,14 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://speed-hack.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'shellingford330',
+    url: 'https://ca-witter.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'progriro',
+    url: 'https://progriro-web-speed-hackathon-2.herokuapp.com/',
+    eligible: true,
+  },
 ];
