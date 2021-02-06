@@ -75,4 +75,9 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://ca-wsh-2021.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'den8383arfp',
+    url: 'https://web-speed-hackathon-den8383.herokuapp.com/',
+    eligible: true,
+  },
 ];
