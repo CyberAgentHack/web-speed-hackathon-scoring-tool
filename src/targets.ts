@@ -65,4 +65,9 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://speed-hackathon-2021-yoshida.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'ninomiya',
+    url: 'https://wsh-2021.herokuapp.com/',
+    eligible: true,
+  },
 ];
