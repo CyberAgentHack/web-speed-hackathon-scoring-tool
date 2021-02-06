@@ -155,4 +155,9 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://miki-web-speed-hackathon.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'sapphi-red',
+    url: 'https://web-speed-hackathon-online-2021.sapphi.red/',
+    eligible: true,
+  },
 ];
