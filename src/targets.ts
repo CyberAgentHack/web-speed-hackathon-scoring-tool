@@ -125,4 +125,34 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://progriro-web-speed-hackathon-2.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'BIwashi',
+    url: 'https://iwami-cawitter.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'kise',
+    url: 'https://frozen-castle-13961.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'miyahika',
+    url: 'https://ca-hackthon.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'Kazuki Nishimura',
+    url: 'https://web-speed-hackathon-by-kn.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'n4r1tahhhh',
+    url: 'https://arcane-savannah-07519.herokuapp.com',
+    eligible: true,
+  },
+  {
+    id: 'miki',
+    url: 'https://miki-web-speed-hackathon.herokuapp.com/',
+    eligible: true,
+  },
 ];
