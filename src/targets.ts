@@ -25,4 +25,44 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://webspeedhackathon2021.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'noxhalt',
+    url: 'https://still-lake-45373.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'tommy',
+    url: 'https://webspeed.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'hijiki51',
+    url: 'https://web-speed-hackathon-hijiki51.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'takuan',
+    url: 'https://webspeed-app.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'YukiYada',
+    url: 'https://cyber-hackathon.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'kenshin1025',
+    url: 'https://webspead.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'morioprog',
+    url: 'https://web-speed-hackathon-2021-z.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'tomohiroyoshida',
+    url: 'https://speed-hackathon-2021-yoshida.herokuapp.com/',
+    eligible: true,
+  },
 ];
