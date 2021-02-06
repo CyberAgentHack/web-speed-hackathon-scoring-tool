@@ -110,4 +110,9 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://wsh2021.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'yamazaki',
+    url: 'https://speed-hack.herokuapp.com/',
+    eligible: true,
+  },
 ];
