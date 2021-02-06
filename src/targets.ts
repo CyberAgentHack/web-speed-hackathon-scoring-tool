@@ -80,4 +80,14 @@ export const competitors: ReadonlyArray<Competitor> = [
     url: 'https://web-speed-hackathon-den8383.herokuapp.com/',
     eligible: true,
   },
+  {
+    id: 'okb_okb_9',
+    url: 'https://webspeed-okbokb.herokuapp.com/',
+    eligible: true,
+  },
+  {
+    id: 'UMASHIBA',
+    url: 'https://web-performance-hackathon.herokuapp.com/',
+    eligible: true,
+  },
 ];
