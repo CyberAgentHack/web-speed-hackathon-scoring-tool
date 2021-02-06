@@ -19,4 +19,10 @@ export const targetPaths: string[] = [
   '/terms',
 ];
 
-export const competitors: ReadonlyArray<Competitor> = [];
+export const competitors: ReadonlyArray<Competitor> = [
+  {
+    id: 'champon1020',
+    url: 'https://webspeedhackathon2021.herokuapp.com/',
+    eligible: true,
+  },
+];
