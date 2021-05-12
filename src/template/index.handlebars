@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <title>Web Speed Hackathon Online Leaderboard</title>
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex,noarchive" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+      h1 {
+        text-align: center;
+        background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+        margin: 0;
+        padding: 32px;
+        color: #fff;
+        font-family: fantasy;
+      }
+      main {
+        max-width: 780px;
+        margin: 0 auto;
+      }
+      .p-updated {
+        text-align: right;
+      }
+      .p-leaderboard {
+        width: 100%;
+      }
+      .p-rank__tr {
+        display: flex;
+        padding: 16px;
+        align-items: center;
+      }
+      .p-rank__rank {
+        flex: 0 0 auto;
+        margin-right: 16px;
+        width: 50px;
+        text-align: center;
+      }
+      .p-rank__id {
+        flex: 1 1 0;
+        display: flex;
+        align-items: center;
+      }
+      .p-rank__image {
+        margin-right: 16px;
+        object-fit: cover;
+        border-radius: 20px;
+      }
+      .p-rank__name {
+        font-size: 16px;
+      }
+      .p-rank__score {
+        flex: 0 0 auto;
+        font-weight: bold;
+        text-align: right;
+        text-transform: uppercase;
+      }
+      .p-rank__score__message {
+        font-size: 12px;
+        font-weight: normal;
+      }
+      .p-rank__tr:nth-child(1).p-rank__tr--with-rank,
+      .p-rank__tr:nth-child(1).p-rank__tr--with-rank .p-rank__name {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .p-rank__tr:nth-child(1).p-rank__tr--with-rank .p-rank__name::before {
+        content: '🥇';
+      }
+      .p-rank__tr:nth-child(1).p-rank__tr--with-rank .p-rank__image {
+        width: 80px;
+        height: 80px;
+        border-radius: 40px;
+      }
+      .p-rank__tr:nth-child(2).p-rank__tr--with-rank,
+      .p-rank__tr:nth-child(2).p-rank__tr--with-rank .p-rank__name {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .p-rank__tr:nth-child(2).p-rank__tr--with-rank .p-rank__name::before {
+        content: '🥈';
+      }
+      .p-rank__tr:nth-child(2).p-rank__tr--with-rank .p-rank__image {
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+      }
+      .p-rank__tr:nth-child(3).p-rank__tr--with-rank,
+      .p-rank__tr:nth-child(3).p-rank__tr--with-rank .p-rank__name {
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .p-rank__tr:nth-child(3).p-rank__tr--with-rank .p-rank__name::before {
+        content: '🥉';
+      }
+      .p-rank__tr:nth-child(3).p-rank__tr--with-rank .p-rank__image {
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+      }
+      .closed {
+        color: white;
+        background: rgb(37, 9, 39);
+      }
+      .closed main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .p-closed {
+        font-size: 24px;
+      }
+    </style>
+  </head>
+  <body class="{{#if closed}}closed{{/if}}">
+    <h1>Web Speed Hackathon Online Leaderboard</h1>
+    <main>
+      {{#if closed}}
+        <p class="p-closed">計測中</p>
+        <iframe src="https://giphy.com/embed/Cd9XcHdZEIcaA" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+        <p><a href="https://giphy.com/gifs/animation-doughnuts-lighthouse-Cd9XcHdZEIcaA">via GIPHY</a></p>
+      {{else}}
+        <p class="p-updated">更新日時: <time>{{now}}</time></p>
+        <table class="p-leaderboard">
+          <thead class="p-rank">
+            <tr class="p-rank__tr">
+              <th class="p-rank__rank">Rank</th>
+              <th class="p-rank__id">ID</th>
+              <th class="p-rank__score">Score</th>
+            </tr>
+          </thead>
+          <tbody class="p-rank__body">
+            {{#each competitors}}
+              <tr class="p-rank__tr{{#if this.rank}} p-rank__tr--with-rank{{/if}}">
+                <th class="p-rank__rank">{{#if this.rank}}{{this.rank}}{{else}}-{{/if}}</th>
+                <td class="p-rank__id">
+                  <img
+                    class="p-rank__image"
+                    src="{{this.icon}}"
+                    alt=""
+                    width="40"
+                    height="40"
+                  />
+                  <p class="p-rank__name">
+                    {{this.competitorId}}
+                  </p>
+                </td>
+                <td class="p-rank__score">
+                  {{#if this.result.error}}
+                    <div title="{{this.result.error.message}}">(計測エラー)</div>
+                  {{else}}
+                    <div>{{this.result.score}}</div>
+                    {{#if this.ineligible}}
+                      <div class="p-rank__score__message">(参考得点)</div>
+                    {{/if}}
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/if}}
+    </main>
+  </body>
+</html>

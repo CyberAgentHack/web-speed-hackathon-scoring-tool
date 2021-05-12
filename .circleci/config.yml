@@ -1,0 +1,164 @@
+version: 2.1
+
+workspace_root: &workspace_root /tmp/workspace
+config_dir: &config_dir ./config
+tool_repo_dir: &tool_repo_dir ./tool
+leaderboard_repo_dir: &leaderboard_repo_dir ./leaderboard
+result_dir: &result_dir ./result
+yarnpkg_cache_dir: &yarnpkg_cache_dir ./.cache/yarn
+
+cond_filters_main: &cond_filters_main
+  branches:
+    only: main
+
+executors:
+  node_executor:
+    working_directory: *workspace_root
+    docker:
+      - image: circleci/node:15.14.0-stretch
+
+  node_with_browsers_executor:
+    working_directory: *workspace_root
+    docker:
+      - image: circleci/node:15.14.0-stretch-browsers
+
+commands:
+  run_steps_restore_workspace:
+    steps:
+      - attach_workspace:
+          at: *workspace_root
+      - run: pwd
+      - run: ls -al
+
+  run_steps_prepare_repository:
+    steps:
+      - run:
+          name: Install dependencies and build
+          environment:
+            TOOL_REPO_DIR: *tool_repo_dir
+          command: |
+            pushd ${TOOL_REPO_DIR}
+            yarn
+            yarn build
+            popd
+
+jobs:
+  prepare:
+    executor: node_executor
+    steps:
+      - run_steps_restore_workspace
+      - checkout:
+          path: *tool_repo_dir
+      - run_steps_prepare_repository
+      - run:
+          environment:
+            CONFIG_DIR: *config_dir
+            TOOL_REPO_DIR: *tool_repo_dir
+          command: |
+            mkdir -p ${CONFIG_DIR}
+            node ${TOOL_REPO_DIR}/tools/create_config_local_json.mjs > ${CONFIG_DIR}/local.json
+            node ${TOOL_REPO_DIR}/tools/fetch_competitors.mjs > ${CONFIG_DIR}/competitors.json
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - *config_dir
+
+  measure:
+    executor: node_with_browsers_executor
+    parameters:
+      targetGroup:
+        type: integer
+      parallelCount:
+        type: integer
+    steps:
+      - run_steps_restore_workspace
+      - checkout:
+          path: *tool_repo_dir
+      - run_steps_prepare_repository
+      - run:
+          name: Copy configurations
+          environment:
+            CONFIG_DIR: *config_dir
+            TOOL_REPO_DIR: *tool_repo_dir
+          command: |
+            cp ${CONFIG_DIR}/local.json ${TOOL_REPO_DIR}/config/local.json
+            cp ${CONFIG_DIR}/competitors.json ${TOOL_REPO_DIR}/competitors.json
+      - run:
+          name: Measure
+          environment:
+            RESULT_DIR: *result_dir
+            TOOL_REPO_DIR: *tool_repo_dir
+            MASK_PATH: 'true'
+            TARGET_GROUP: << parameters.targetGroup >>
+            PARALLEL_COUNT: << parameters.parallelCount >>
+          command: |
+            pushd ${TOOL_REPO_DIR}
+            yarn --silent scoring competitors.json > scores.json
+            popd
+            mkdir -p ${RESULT_DIR}
+            cp ${TOOL_REPO_DIR}/scores.json ${RESULT_DIR}/scores-${TARGET_GROUP}.json
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - *result_dir
+
+  push:
+    executor: node_executor
+    steps:
+      - run_steps_restore_workspace
+      - checkout:
+          path: *tool_repo_dir
+      - run:
+          name: Concat results
+          environment:
+            RESULT_DIR: *result_dir
+            TOOL_REPO_DIR: *tool_repo_dir
+          command: |
+            node ${TOOL_REPO_DIR}/tools/concat_scores.mjs > ${RESULT_DIR}/scores.json
+      - run:
+          name: Push results
+          environment:
+            LEADERBOARD_REPO_DIR: *leaderboard_repo_dir
+            RESULT_DIR: *result_dir
+          command: |
+            git clone -q --depth 1 https://${GITHUB_PERSONAL_TOKEN}@github.com/CyberAgentHack/web-speed-hackathon-leaderboard.git ${LEADERBOARD_REPO_DIR}
+            cp ${RESULT_DIR}/scores.json ${LEADERBOARD_REPO_DIR}/scores.json
+
+            pushd ${LEADERBOARD_REPO_DIR}
+
+            git config credential.helper 'cache --timeout=120'
+            git config user.email "26074199+circleci[bot]@users.noreply.github.com"
+            git config user.name "Leaderboard Bot"
+
+            git add scores.json
+            git commit -m "Update scores"
+            git push -q https://${GITHUB_PERSONAL_TOKEN}@github.com/CyberAgentHack/web-speed-hackathon-leaderboard.git main
+
+            popd
+
+workflows:
+  version: 2
+  scoring:
+    # triggers:
+    #   - schedule:
+    #     cron: "0 0 * * *"
+    #     filters:
+    #       <<: *cond_filters_main
+    jobs:
+      - prepare:
+          filters:
+            <<: *cond_filters_main
+      - measure:
+          requires:
+            - prepare
+          parallelCount: 2
+          matrix:
+            parameters:
+              targetGroup: [0, 1]
+          filters:
+            <<: *cond_filters_main
+      - push:
+          requires:
+            - measure
+          filters:
+            <<: *cond_filters_main
