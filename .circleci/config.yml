@@ -161,10 +161,10 @@ workflows:
       - measure:
           requires:
             - prepare
-          parallelCount: 2
+          parallelCount: 8
           matrix:
             parameters:
-              targetGroup: [0, 1]
+              targetGroup: [0, 1, 2, 3, 4, 5, 6, 7]
           filters:
             <<: *cond_filters_feature_event
       - push:
