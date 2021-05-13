@@ -151,10 +151,10 @@ workflows:
       - measure:
           requires:
             - prepare
-          parallelCount: 2
+          parallelCount: 5
           matrix:
             parameters:
-              targetGroup: [0, 1]
+              targetGroup: [0, 1, 2, 3, 4]
           filters:
             <<: *cond_filters_main
       - push:
