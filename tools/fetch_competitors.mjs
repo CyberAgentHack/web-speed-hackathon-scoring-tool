@@ -1,4 +1,4 @@
-import request from 'request-promise-native';
+import fetch from 'node-fetch';
 
 async function main() {
   if (!process.env.COMPETITORS_SPREADSHEET_JSON) {
@@ -6,8 +6,8 @@ async function main() {
     process.exit(1);
   }
 
-  const res = await request(process.env.COMPETITORS_SPREADSHEET_JSON);
-  const json = JSON.parse(res);
+  const res = await fetch(process.env.COMPETITORS_SPREADSHEET_JSON);
+  const json = await res.json();
   const entries = json.feed.entry;
 
   const competitors = entries.map((entry) => {
