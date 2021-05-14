@@ -98,7 +98,7 @@ async function measurePages(
       console.error(urlToShow);
 
       // Check HTTP status before actually running Lighthouse
-      const res = await fetch(url, { method: 'HEAD' });
+      const res = await fetch(url, { method: 'GET' });
 
       if (!res.ok) {
         throw new Error(
