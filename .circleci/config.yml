@@ -18,12 +18,12 @@ executors:
   node_executor:
     working_directory: *workspace_root
     docker:
-      - image: cimg/node:16.1.0
+      - image: cimg/node:14.17.0
 
   node_with_browsers_executor:
     working_directory: *workspace_root
     docker:
-      - image: cimg/node:16.1.0-browsers
+      - image: cimg/node:14.17.0-browsers
 
 commands:
   run_steps_restore_workspace:
